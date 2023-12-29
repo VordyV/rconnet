@@ -10,6 +10,11 @@ class Ban():
         for option, value in kwargs.items():
             setattr(self, option, value)
 
+    def __repr__(self):
+        if self.type == "address": return "Ban(address=%s, period=%s)" % (self.address, self.period)
+        elif self.type == "key": return "Ban(key=%s, period=%s)" % (self.key, self.period)
+        else: return "Ban(key=%s, address=%s, period=%s, type=%s)" % (self.key, self.address, self.period, self.type)
+
     def unban(self):
         if self.type == "address": return self.__client.rcon_invoke("exec admin.removeAddressFromBanList %s" % self.address)
         elif self.type == "key": return self.__client.rcon_invoke("exec admin.removeKeyFromBanList %s" % self.key)
@@ -26,15 +31,18 @@ class BanManager():
         banlist = []
 
         pattern = re.compile('(\S*?): (\S*?) (\S*)')
-        for ban in blAddrs.split("\n"):
-            matches = pattern.findall(ban)
-            if len(matches) != 0:
-                banlist.append(Ban(self.__client, type="address", address=matches[0][1], period=matches[0][2], key=None))
 
-        for ban in blKeys.split("\n"):
-            matches = pattern.findall(ban)
-            if len(matches) != 0:
-                banlist.append(Ban(self.__client, type="key", key=matches[0][1], period=matches[0][2], address=None))
+        if blAddrs is not None:
+            for ban in blAddrs.split("\n"):
+                matches = pattern.findall(ban)
+                if len(matches) != 0:
+                    banlist.append(Ban(self.__client, type="address", address=matches[0][1], period=matches[0][2], key=None))
+
+        if blKeys is not None:
+            for ban in blKeys.split("\n"):
+                matches = pattern.findall(ban)
+                if len(matches) != 0:
+                    banlist.append(Ban(self.__client, type="key", key=matches[0][1], period=matches[0][2], address=None))
 
         if len(banlist) < 1: return None
         return banlist
@@ -45,3 +53,12 @@ class BanManager():
 
     def clear(self):
         return self.__client.rcon_invoke("exec admin.clearBanList")
+
+    def kick(self, id: int):
+        return self.__client.rcon_invoke("exec admin.kickPlayer %s" % id)
+
+    def add_ban(self, address: str, period="perm"):
+        return self.__client.rcon_invoke("exec admin.addAddressToBanList %s %s" % (address, period))
+
+    def add_ban_key(self, key: str, period="perm"):
+        return self.__client.rcon_invoke("exec admin.addKeyToBanList %s %s" % (key, period))

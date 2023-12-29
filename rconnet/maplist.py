@@ -8,6 +8,9 @@ class Map():
         self.gpm = gpm
         self.size = size
 
+    def __repr__(self):
+        return "Map(name=%s, gpm=%s, size=%s)" % (self.name, self.gpm, self.size)
+
     def run(self):
         self.__client.rcon_invoke("exec admin.nextLevel %s" % self.id)
         result = self.__client.rcon_invoke("exec admin.runNextLevel")
