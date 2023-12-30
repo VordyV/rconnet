@@ -5,6 +5,8 @@ Main idea of the project was to implement something similar to ORM, as for datab
 
 It was developed on version python 3.11, it was not tested on other versions.
 
+You can learn more about the module and its API in [Wiki](https://github.com/VordyV/rconnet/wiki)
+
 ### Features
 - Separate methods for server management
 - Maplist manager
