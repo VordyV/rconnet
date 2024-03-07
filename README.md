@@ -7,6 +7,11 @@ It was developed on version python 3.11, it was not tested on other versions.
 
 You can learn more about the module and its API in [Wiki](https://github.com/VordyV/rconnet/wiki)
 
+### Install
+`pip install rconnet`
+
+[pypi.org/project/rconnet/](https://pypi.org/project/rconnet/)
+
 ### Features
 - Separate methods for server management
 - Maplist manager
