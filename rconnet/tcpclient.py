@@ -13,19 +13,37 @@ class TCPClientStatuses:
 
 class TCPClient(object):
 
-    def __init__(self, address: str, password: int, port: int=4711, reconnect: bool=True, debug: bool=True, debug_format:str="%(levelname)s:%(message)s", debug_level:object=logging.DEBUG):
+    def __init__(self, address: str,
+                 password: int,
+                 port: int=4711,
+                 debug: bool=True,
+                 debug_format: str="%(levelname)s:%(message)s",
+                 debug_level: object=logging.DEBUG,
+                 on_connect: object=None,
+                 on_disconnect: object = None,
+                 on_close: object = None,
+                 on_status: object = None,
+                 ):
+
         self.socket = None
         self.address = address
         self.password = password
         self.port = port
-        self._reconnect = reconnect
         self.debug = debug
         self.debug_format = debug_format
         self.debug_level = debug_level
+        self.on_connect = on_connect,
+        self.on_disconnect = on_disconnect,
+        self.on_close = on_close,
+        self.on_status = on_status,
         self._status = TCPClientStatuses.DISABLED
         self._inr = 0
 
         logging.basicConfig(format=self.debug_format, level=self.debug_level)
+
+    def _exec_event(self, name, *args):
+        method = getattr(self, name)[0]
+        if method is not None: method(*args)
 
     def log(self, *value):
         if self.debug: logging.debug(" ".join(str(v) for v in value))
@@ -37,13 +55,18 @@ class TCPClient(object):
     @status.setter
     def status(self, status):
         self._status = status
+        self._exec_event("on_status", status)
 
     def start(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.address, self.port))
-        self.pre_init()
+        self._pre_init()
         self.status = TCPClientStatuses.CONNECTED
+        self._exec_event("on_connect")
         return True
+
+    def _pre_init(self):
+        self.pre_init()
 
     def pre_init(self):
         welcResponse = ""
@@ -79,9 +102,9 @@ class TCPClient(object):
         if not self.socket: return None
         self.status = TCPClientStatuses.DISABLED
         self.socket.close()
+        self._exec_event("on_close")
 
     def rcon_invoke(self, command):
-        rt = time.time_ns()
         if not self.socket: raise Exception("The client is not connected")
         self.socket.send(('\x02' + command + '\n').encode("utf-8"))
         self._inr += 1
@@ -93,6 +116,7 @@ class TCPClient(object):
                 if data is None: raise Exception("Client has terminated the current connection. ")
             except Exception as error:
                 self.status = TCPClientStatuses.DISABLED
+                self._exec_event("on_disconnect")
                 raise Exception(error)
             for c in data:
                 if c == 0x4:
@@ -100,7 +124,5 @@ class TCPClient(object):
                     break
                 result += chr(c)
         if len(result) > 0 and result[-1] == "\n": result = result[:-1]
-        ct = time.time_ns()
-        #self.log(ct-rt, "ns")
         if result.strip() == "": return None
         return result
