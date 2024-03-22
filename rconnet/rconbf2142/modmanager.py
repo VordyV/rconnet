@@ -2,9 +2,11 @@ from .default import Default
 import re
 
 class ModManager(Default):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.full_drive = True
+
     def start(self):
         super().start()
         if self.rcon_invoke("bf2cc check") == "rcon: unknown command: 'bf2cc'": self.full_drive = False
