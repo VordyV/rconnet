@@ -19,10 +19,10 @@ class TCPClient(object):
                  debug: bool=True,
                  debug_format: str="%(levelname)s:%(message)s",
                  debug_level: object=logging.DEBUG,
-                 on_connect: object=None,
-                 on_disconnect: object = None,
-                 on_close: object = None,
-                 on_status: object = None,
+                 on_connect = None,
+                 on_disconnect = None,
+                 on_close = None,
+                 on_status = None,
                  ):
 
         self.socket = None
@@ -42,7 +42,8 @@ class TCPClient(object):
         logging.basicConfig(format=self.debug_format, level=self.debug_level)
 
     def _exec_event(self, name, *args):
-        method = getattr(self, name)[0]
+        method = getattr(self, name)
+        if type(method) == tuple: method = method[0]
         if method is not None: method(*args)
 
     def log(self, *value):
@@ -116,7 +117,7 @@ class TCPClient(object):
                 if data is None: raise Exception("Client has terminated the current connection. ")
             except Exception as error:
                 self.status = TCPClientStatuses.DISABLED
-                self._exec_event("on_disconnect")
+                self._exec_event("on_disconnect", error)
                 raise Exception(error)
             for c in data:
                 if c == 0x4:
@@ -126,3 +127,47 @@ class TCPClient(object):
         if len(result) > 0 and result[-1] == "\n": result = result[:-1]
         if result.strip() == "": return None
         return result
+
+class TCPListener(TCPClient):
+
+    def __init__(self, *args, commands:list = [], on_recv:object = None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._commands = commands
+        self.on_recv = on_recv
+
+    def pre_init(self):
+        super().pre_init()
+        for command in self._commands:
+            self.socket.send(('\x02' + command + '\n').encode("utf-8"))
+
+    def start(self):
+        while True:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            try:
+                self.socket.connect((self.address, self.port))
+                self._pre_init()
+                self.status = TCPClientStatuses.CONNECTED
+                self._exec_event("on_connect")
+            except Exception as error:
+                time.sleep(3)
+                print(error)
+                continue
+
+            while 1:
+                try:
+                    data = self.socket.recv(2048)
+                    if data is None: raise Exception("Client has terminated the current connection. ")
+                except Exception as error:
+                    self._exec_event("on_disconnect", error)
+                    break
+                result = data
+                done = False
+                if result[-1] == 0x4: done = True
+                while not done:
+                    data = self.socket.recv(2048)
+                    for c in data:
+                        if c == 0x4:
+                            done = True
+                            break
+                        result += chr(c)
+                self._exec_event("on_recv", result)
