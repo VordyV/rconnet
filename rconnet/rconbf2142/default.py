@@ -52,6 +52,7 @@ class Default(TCPClient):
 
     def __get_players(self):
         rawData = self.rcon_invoke('exec admin.listplayers')
+        if rawData is None: return None
         pattern1 = re.compile(r'''^Id:\ +(\d+)\ -\ (.*?)\ is\ remote\ ip:\ (\d+\.\d+\.\d+\.\d+):(\d+)''', re.VERBOSE)
         pattern2 = re.compile(r'''(?:.*hash:\ (\w{32}))?''', re.VERBOSE)
         players = {}
