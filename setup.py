@@ -1,16 +1,16 @@
 from setuptools import setup, find_packages
 
-def readme():
-  with open('README.md', 'r') as f:
-    return f.read()
+from pathlib import Path
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
   name='rconnet',
-  version='0.0.1',
+  version='0.0.2',
   author='VordyV',
   author_email='vordy.production@gmail.com',
   description='Python RCON client for the Battlefield 2142 server',
-  long_description=readme(),
+  #long_description=long_description,
   url='https://github.com/VordyV/rconnet',
   packages=find_packages(),
   keywords='rcon client',

@@ -1,4 +1,5 @@
 from .default import Default
+from .modules.modmanager.bf2cc import Bf2cc
 import re
 
 class ModManager(Default):
@@ -6,6 +7,7 @@ class ModManager(Default):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.full_drive = True
+        self.bf2cc = Bf2cc(self)
 
     def start(self):
         super().start()
@@ -62,3 +64,26 @@ class ModManager(Default):
                 sections[section][option] = sections[section].get(option, value)
 
         return sections
+
+    def reload_module(self, module:str):
+        self._has_full_drive()
+        return self.rcon_invoke("mm reloadModule %s" % module)
+
+    def start_module(self, module:str):
+        self._has_full_drive()
+        return self.rcon_invoke("mm startModule %s" % module)
+    def shutdown_module(self, module:str):
+        self._has_full_drive()
+        return self.rcon_invoke("mm shutdownModule %s" % module)
+
+    def load_module(self, module:str):
+        self._has_full_drive()
+        return self.rcon_invoke("mm loadModule %s" % module)
+
+    def save_config(self):
+        self._has_full_drive()
+        return self.rcon_invoke("mm saveConfig")
+
+    def set_param(self, module:str, option:str, value:str):
+        self._has_full_drive()
+        return self.rcon_invoke("mm setParam %s %s %s" % (module, option, value))
