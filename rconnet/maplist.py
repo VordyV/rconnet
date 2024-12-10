@@ -37,7 +37,7 @@ class MapList():
     def __load(self):
         data = self.__client.rcon_invoke("exec maplist.list")
         list = {}
-        pattern = re.compile('(\d+): "(\S*?)" (\S*) (\d+)')
+        pattern = re.compile(r'(\d+): "(\S*?)" (\S*) (\d+)')
         for map in data.split("\n"):
             matches = pattern.findall(map)
             if len(matches) != 0:

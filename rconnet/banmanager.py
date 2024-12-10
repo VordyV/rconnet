@@ -30,7 +30,7 @@ class BanManager():
 
         banlist = []
 
-        pattern = re.compile('(\S*?): (\S*?) (\S*)')
+        pattern = re.compile(r'(\S*?): (\S*?) (\S*)')
 
         if blAddrs is not None:
             for ban in blAddrs.split("\n"):

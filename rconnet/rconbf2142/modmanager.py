@@ -6,19 +6,14 @@ class ModManager(Default):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.full_drive = True
         self.bf2cc = Bf2cc(self)
 
     def start(self):
         super().start()
-        if self.rcon_invoke("bf2cc check") == "rcon: unknown command: 'bf2cc'": self.full_drive = False
-
-    def _has_full_drive(self):
-        if not self.full_drive:
+        if self.rcon_invoke("bf2cc check") == "rcon: unknown command: 'bf2cc'":
             raise Exception("Modmanager is not installed on the server")
 
     def list_modules(self):
-        self._has_full_drive()
         modules = {}
         pattern = r"^(.*?)\s+v(\d+\.\d+)\s+\(\s+(.*?)\s+\)$"
         lines = self.rcon_invoke("mm listModules")
@@ -33,7 +28,6 @@ class ModManager(Default):
         return modules
 
     def config(self):
-        self._has_full_drive()
         pattern = r'(?P<section>\w+)\.(?P<option>\w+)\s+(?:(?P<value_int>\d+)|\"(?P<value_str>[^\"]+)\")'
         sections = {}
 
@@ -66,24 +60,19 @@ class ModManager(Default):
         return sections
 
     def reload_module(self, module:str):
-        self._has_full_drive()
         return self.rcon_invoke("mm reloadModule %s" % module)
 
     def start_module(self, module:str):
-        self._has_full_drive()
         return self.rcon_invoke("mm startModule %s" % module)
+
     def shutdown_module(self, module:str):
-        self._has_full_drive()
         return self.rcon_invoke("mm shutdownModule %s" % module)
 
     def load_module(self, module:str):
-        self._has_full_drive()
         return self.rcon_invoke("mm loadModule %s" % module)
 
     def save_config(self):
-        self._has_full_drive()
         return self.rcon_invoke("mm saveConfig")
 
     def set_param(self, module:str, option:str, value:str):
-        self._has_full_drive()
         return self.rcon_invoke("mm setParam %s %s %s" % (module, option, value))

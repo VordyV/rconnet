@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "rconnet"
+version = "0.0.4"
+description = "Python RCON client for the Battlefield 2142 server"
+authors = ["Vordy <61288579+VordyV@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
