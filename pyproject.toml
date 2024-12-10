@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rconnet"
-version = "0.0.4"
+version = "0.0.3"
 description = "Python RCON client for the Battlefield 2142 server"
 authors = ["Vordy <61288579+VordyV@users.noreply.github.com>"]
 readme = "README.md"
