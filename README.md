@@ -3,7 +3,7 @@ The project is a module for python, and the task of the module is to create a co
 
 Main idea of the project was to implement something similar to ORM, as for databases.
 
-It was developed on version python 3.11, it was not tested on other versions.
+It was developed on version python 3.12, it was not tested on other versions.
 
 You can learn more about the module and its API in [Wiki](https://github.com/VordyV/rconnet/wiki)
 
@@ -29,7 +29,7 @@ You can do anything with this module, for example, a web banlist, a GUI program,
 ## Examples
 1. Simple output of the server name
 ```python
-from rconnet.rconbf2142.default import Default
+from rconnet.rconbf2142 import Default
 
 with Default("127.0.0.1", "super123") as rcon:
     name = rcon.settings.server_name()
@@ -38,7 +38,7 @@ with Default("127.0.0.1", "super123") as rcon:
 ```
 2. View the maplist and install the next map
 ```python
-from rconnet.rconbf2142.default import Default
+from rconnet.rconbf2142 import Default
 
 with Default("127.0.0.1", "super123") as rcon:
     maplist = rcon.maplist.list
@@ -49,7 +49,7 @@ with Default("127.0.0.1", "super123") as rcon:
 ```
 3. Adding a ban to the list
 ```python
-from rconnet.rconbf2142.default import Default
+from rconnet.rconbf2142 import Default
 
 with Default("127.0.0.1", "super123") as rcon:
     rcon.banmanager.add_ban("172.123.54.6")
