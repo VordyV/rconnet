@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rconnet"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python RCON client for the Battlefield 2142 server"
 authors = ["Vordy <61288579+VordyV@users.noreply.github.com>"]
 readme = "README.md"
@@ -12,6 +12,8 @@ packages = [{include = "rconnet"}]
 
 [tool.poetry.dependencies]
 python = "<3.14,>=3.12"
+sphinx = "^8.1.3"
+pdoc = "^15.0.1"
 
 
 [build-system]
