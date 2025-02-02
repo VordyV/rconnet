@@ -22,6 +22,7 @@ You can learn more about the module and its API in [Wiki](https://github.com/Vor
 
 ### Specifications
 - Adminscript - default support
+- Modmanager - in the process of implementing the support
 - Battlefield 2142 support (It has not been tested in Battlefield 2, but it can work)
 
 You can do anything with this module, for example, a web banlist, a GUI program, a bot for Discord or telegram. That was the goal, to use a ready-made solution for different purposes.
