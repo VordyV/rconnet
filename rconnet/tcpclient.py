@@ -2,6 +2,8 @@ import hashlib
 import socket
 import time
 import logging
+from typing import Callable
+
 import rconnet
 
 logger = logging.getLogger(rconnet.__name__)
@@ -19,10 +21,11 @@ class TCPClient(object):
     def __init__(self, address: str,
                  password: int,
                  port: int=4711,
-                 on_connect = None,
-                 on_disconnect = None,
-                 on_close = None,
-                 on_status = None,
+                 on_connect: Callable = None,
+                 on_disconnect: Callable = None,
+                 on_close: Callable = None,
+                 on_status: Callable = None,
+                 timeout: float = None,
                  ):
 
         self.socket = None
@@ -33,6 +36,7 @@ class TCPClient(object):
         self.on_disconnect = on_disconnect,
         self.on_close = on_close,
         self.on_status = on_status,
+        self.timeout = timeout
         self._status = TCPClientStatuses.DISABLED
         self._inr = 0
 
@@ -65,6 +69,7 @@ class TCPClient(object):
     def start(self):
         self.__info("Opens a socket connection ...")
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.settimeout(self.timeout)
         self.socket.connect((self.address, self.port))
         self.__info("Connected")
         self._pre_init()
@@ -87,7 +92,6 @@ class TCPClient(object):
 
         prefix = '### Digest seed: '
         seedPos = welcResponse.find(prefix)
-        seed = ""
 
         if seedPos == -1: raise Exception("Authorization is not possible")
 

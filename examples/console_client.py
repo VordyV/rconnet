@@ -2,7 +2,7 @@ from rconnet.rconbf2142 import Default
 
 address, password, port = ("127.0.0.1", "super123", 4711)
 
-with Default(address, password, port=port) as rcon:
+with Default(address, password, port=port, timeout=1.0) as rcon:
     print("Connected.")
     while True:
         try:
