@@ -13,7 +13,9 @@ https://github.com/VordyV/rconnet.dotnet
 ___
 
 ### Install
-```pip install rconnet```
+```
+pip install rconnet
+```
 
 [pypi.org/project/rconnet/](https://pypi.org/project/rconnet/)
 
