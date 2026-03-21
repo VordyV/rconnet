@@ -6,6 +6,11 @@ Main idea of the project was to implement something similar to ORM, as for datab
 It was developed on version python 3.12, it was not tested on other versions.
 
 You can learn more about the module and its API in [Wiki](https://github.com/VordyV/rconnet/wiki)
+___
+
+There is an implementation of this module for C# in the form of a DLL library
+https://github.com/VordyV/rconnet.dotnet
+___
 
 ### Install
 `pip install rconnet`
