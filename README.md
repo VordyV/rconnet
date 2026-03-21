@@ -6,7 +6,7 @@ ___
 https://github.com/VordyV/rconnet.dotnet
 ___
 
-
+### What is this?
 The project is a module for python, and the task of the module is to create a connection to the RCON Battlefield 2142, Battlefield 2 server. Simply put, it is an RCON client.
 
 Main idea of the project was to implement something similar to ORM, as for databases.
