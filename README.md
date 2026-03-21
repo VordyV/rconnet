@@ -16,6 +16,9 @@ ___
 ```
 pip install rconnet
 ```
+```
+poetry add rconnet
+```
 
 [pypi.org/project/rconnet/](https://pypi.org/project/rconnet/)
 
