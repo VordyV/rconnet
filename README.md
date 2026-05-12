@@ -1,4 +1,12 @@
 # rconnet
+
+___
+
+:b: There is an implementation of this module for C# in the form of a DLL library
+https://github.com/VordyV/rconnet.dotnet
+___
+
+### What is this?
 The project is a module for python, and the task of the module is to create a connection to the RCON Battlefield 2142, Battlefield 2 server. Simply put, it is an RCON client.
 
 Main idea of the project was to implement something similar to ORM, as for databases.
@@ -8,7 +16,12 @@ It was developed on version python 3.12, it was not tested on other versions.
 You can learn more about the module and its API in [Wiki](https://github.com/VordyV/rconnet/wiki)
 
 ### Install
-`pip install rconnet`
+```
+pip install rconnet
+```
+```
+poetry add rconnet
+```
 
 [pypi.org/project/rconnet/](https://pypi.org/project/rconnet/)
 
