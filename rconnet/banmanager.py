@@ -25,6 +25,10 @@ class BanManager():
         self.__client = client
 
     def __load(self):
+        """
+        fdfdf
+        :return:
+        """
         blAddrs = self.__client.rcon_invoke("exec admin.listBannedAddresses")
         blKeys = self.__client.rcon_invoke("exec admin.listBannedKeys")
 
@@ -49,6 +53,17 @@ class BanManager():
 
     @property
     def list(self):
+        """
+          This function demonstrates a Google style docstring with detailed argument
+          and return descriptions.
+
+          Args:
+              arg1: An integer argument.
+              arg2: A string argument.
+
+          Returns:
+              A string with a combined result.
+        """
         return self.__load()
 
     def clear(self):
